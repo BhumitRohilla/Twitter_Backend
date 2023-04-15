@@ -25,7 +25,7 @@ async function login(req,res){
                     maxAge: 7 * 24 * 60 * 60,
                     sameSite: 'strict',
                     httpOnly: true,
-                    domain: '192.168.56.1'
+                    domain: process.env.HOSTNAME
                 }
             )
             return res.status(200).json({token: authToken});
