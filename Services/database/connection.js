@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
-    user:'testd',
+    user:'test',
     host:'localhost',
     database:'twitter_trial',
     password:'test',
@@ -16,7 +16,7 @@ async function execQueury(query){
         return (result.rows);
     }
     catch(err){
-        throw new Error(err.error);
+        throw new Error(err);
     }finally{
         client.release();
     }

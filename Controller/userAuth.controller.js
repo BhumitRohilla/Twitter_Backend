@@ -1,3 +1,5 @@
+const {createNewUser,getUser} = require('../Services/database/user');
+
 let jwt = require('jsonwebtoken');
 
 async function login(req,res){
@@ -61,4 +63,32 @@ async function refreshToken(req,res){
 
 }
 
-module.exports = {login,refreshToken};
+async function logout(req,res){
+
+    if (req.cookie?.jwt === undefined ){
+        return res.status(401).send();
+    }
+
+    let refreshToken = jwt.sign({
+        exp: (Date.now()/1000) + 0,
+        userName: userName
+    },process.env.REFRESH_TOKEN)
+    res.cookie('jwt',refreshToken,{
+        httpOnly: true,
+        maxAge: 1,
+        SameSite: 'strict',
+        domain: process.env.HOSTNAME
+    })
+    return res.status(200).send();
+}
+
+
+
+
+
+async function signUp(req,res){
+    let {email, userName, password } = req.body;
+    
+}
+
+module.exports = {login,refreshToken,logout,signUp};
