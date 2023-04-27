@@ -11,6 +11,7 @@ function authorize(req,res,next){
 
     jwt.verify(token,process.env.ACCESS_TOKEN,(err,decoded)=>{
         if(!err){
+            console.log(err);
             req.user = decoded.userInfo;
             next();
         }else{

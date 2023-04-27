@@ -17,7 +17,7 @@ async function login(req,res){
             return res.status(401).json({err:'No user found'});
         }else{
             let authToken = jwt.sign({
-                exp: (Date.now()/1000) + ( 40 * 60 ),
+                exp: (Date.now()/1000) + (  45 * 60 ),
                 "userInfo":{...user},
             },process.env.ACCESS_TOKEN);
             
@@ -57,7 +57,7 @@ async function refreshToken(req,res){
                 return res.status(401).json({err:'User Not Found'});
             } 
             let authToken = jwt.sign({
-                exp: (Date.now()/1000) + ( 40 * 60 ),
+                exp: (Date.now()/1000) + ( 45 * 60 ),
                 "userInfo":user
             },process.env.ACCESS_TOKEN);
 

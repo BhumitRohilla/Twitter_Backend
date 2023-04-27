@@ -6,7 +6,7 @@ async function sendTweet(uId,text,img){
 }
 
 async function getTweet(t_id){
-    let query = `select tweets.*,users.username,users.profilepicture from tweets inner join users on users.u_id = tweets.sender where t_id = ${t_id};`;
+    let query = `select tweets.*,users.username,users.profilepicture from tweets inner join users on users.u_id = tweets.sender where t_id = ${t_id} and commentof is null;`;
     return execQueury(query);
 }
 
@@ -16,5 +16,10 @@ async function getFollowTweet(uId,offset,limit){
     return execQueury(query);
 }
 
-module.exports = {sendTweet,getFollowTweet,getTweet};
+async function sendComment(commentOf,uId,text,img){
+    let query = `insert into tweets (commentof,sender,text,img,dateOfUpload,view,likes,retweet,quote,active) values(${commentOf},${uId}, '${text}', '${img}', current_timestamp , 0 , 0 , false, false, 't');`
+    return execQueury(query);
+}
+
+module.exports = {sendTweet,getFollowTweet,getTweet,sendComment};
 

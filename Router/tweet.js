@@ -7,7 +7,7 @@ const {authorize} = require('../Middleware/authrization');
 
 //Controller
 const tweetController = require('../Controller/tweet.controller');
-const { sendTweet, getFollowTweet, getTweet } = require('../Services/database/tweet');
+const { sendTweet, getFollowTweet, getTweet, sendComment } = require('../Services/database/tweet');
 
 router.post('/send',authorize,upload.array('tweetImg',4),async (req,res)=>{
     console.log(req?.files);
@@ -47,5 +47,25 @@ router.post('/show/follow',authorize,async (req,res)=>{
 
 })
 
+router.post('/sendComment',authorize,upload.array('tweetImg',4),async (req,res)=>{
+    console.log(req?.files);
+    console.log(req.body);
+    console.log(req.user);
+
+    let img = '';
+    Array.from(req.files).forEach((obj)=>{
+        img+=` ${obj.filename}`;
+    })
+    try{
+        let result = await sendComment(req.body.t_id,req.user.u_id,req.body.comment,img);
+        console.log(result);
+        return res.status(200).json({result:'success'});
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({message:"Server Error"});
+    }
+
+})
 
 module.exports =  router;
