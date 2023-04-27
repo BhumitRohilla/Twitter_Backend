@@ -7,7 +7,7 @@ const {authorize} = require('../Middleware/authrization');
 
 //Controller
 const tweetController = require('../Controller/tweet.controller');
-const { sendTweet, getFollowTweet } = require('../Services/database/tweet');
+const { sendTweet, getFollowTweet, getTweet } = require('../Services/database/tweet');
 
 router.post('/send',authorize,upload.array('tweetImg',4),async (req,res)=>{
     console.log(req?.files);
@@ -22,8 +22,10 @@ router.post('/send',authorize,upload.array('tweetImg',4),async (req,res)=>{
 
 
     try{
-        await sendTweet(req.user.u_id,req.body.tweet,img);
-        return res.status(200).json({message:'sucess'});
+        let result = await sendTweet(req.user.u_id,req.body.tweet,img);
+        console.log(result);
+        result = await getTweet(result[0].t_id);
+        return res.status(200).json({result:result[0]});
     }
     catch(err){
         console.log(err);
