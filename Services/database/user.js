@@ -100,4 +100,24 @@ async function getListOfUsers(offset,limit){
     return execQueury(query);
 }
 
-module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers};
+async function getUserToFollow(u_id,offset,limit){
+    let query = `select u_id,username,name,profilepicture from users where u_id not in (select u_id from followtable where follower = ${u_id}) and u_id!=${u_id} offset ${parseInt(offset)} limit ${parseInt(limit)}`
+    return execQueury(query);
+}
+
+async function addLike(t_id,u_id){
+    let query = `call likehandle(${t_id},${u_id})`;
+    return execQueury(query);
+}
+
+async function removeLike(t_id,u_id){
+    let query = `call removeLikeHandle(${t_id},${u_id})`
+    return execQueury(query);
+}
+
+async function getProfile(u_id){
+    let query = `select *, (select count(*) follows from followtable where u_id = ${u_id}),(select count(*) following from followTable where follower = ${u_id}) from users where u_id = ${u_id} ;`;
+    return execQueury(query);
+}
+
+module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile};
