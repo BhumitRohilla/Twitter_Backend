@@ -11,4 +11,6 @@ router.route('/username').post(checkController.username)
 
 router.route('/getListOfUsers').post(checkController.getListOfUsersToFollow)
 
+router.route('/searchUsers/:username').get(checkController.searchUsers);
+
 module.exports = router;

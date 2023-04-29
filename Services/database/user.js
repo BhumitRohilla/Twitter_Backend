@@ -135,4 +135,9 @@ async function getAllLikedOfUser(userToSearch,activeUser){
     return execQueury(query);
 }
 
-module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser};
+async function searchUsers(username){
+    let query = `select u_id,username,profilepicture,name from users where username like '${username}%'`
+    return execQueury(query);
+}
+
+module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers};

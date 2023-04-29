@@ -1,9 +1,9 @@
-const { checkIfUsernameTaken, getListOfUsers, getProfile } = require('../Services/database/user');
+const userDB = require('../Services/database/user')
 
 async function profile(req,res){
     let {u_id} = req.params;
     try{
-        let result = await getProfile(u_id);
+        let result = await userDB.getProfile(u_id);
         return res.status(200).json({profile:result[0]})
     }
     catch(err){
@@ -14,7 +14,7 @@ async function profile(req,res){
 async function username(req,res){
     const {username} = req.body;
     try{
-        let result = await checkIfUsernameTaken(username);
+        let result = await userDB.checkIfUsernameTaken(username);
         if(result.length === 0 ){
             return res.status(200).json({message:"username available"});
         }else{
@@ -36,7 +36,7 @@ async function getListOfUsersToFollow(req,res){
         length = 10;
     }
     try{
-        let result = await getListOfUsers(start,length);
+        let result = await userDB.getListOfUsers(start,length);
         return res.status(200).json({result});
     }
     catch(err){
@@ -44,4 +44,15 @@ async function getListOfUsersToFollow(req,res){
     }
 }
 
-module.exports={profile,username,getListOfUsersToFollow}
+async function searchUsers(req,res){
+    let username = req.params.username;
+    try{
+        let result = await userDB.searchUsers(username);
+        return res.status(200).json({result});
+    }
+    catch(err){
+        return res.status(500).json({message:'fail'});
+    }
+}
+
+module.exports={profile,username,getListOfUsersToFollow,searchUsers}
