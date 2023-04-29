@@ -24,6 +24,7 @@ const check = require('./Router/check');
 
 const {authorize} = require('./Middleware/authrization');
 
+///(^|(?<=\s))@\w+/g;
 
 app.route('/testConnection')
 .get((req,res)=>{

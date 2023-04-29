@@ -24,7 +24,6 @@ async function getUser(userName,password){
         }
     }
     catch(err){
-        console.log(err);
         return null;
     }
 }
@@ -33,12 +32,10 @@ async function getUser(userName,password){
 async function createNewUser(obj){
     const query = `insert into Users(email,name,username,password) values('${obj.email}','${obj.name}','${obj.username}','${obj.password}');`;
     try{
-        console.log(query);
         await execQueury(query);
         return true;
     }
     catch(err){
-        console.log(err);
         return false;
     }
 }
@@ -121,7 +118,13 @@ async function getProfile(u_id){
 }
 
 async function getAllTweetsOfUser(userToSearch,activeUser){
-    let query = `select tweets.*,liked from (select tweets.*,username,name,u_id,profilepicture from tweets inner join users on sender = users.u_id where commentof is null) as tweets left join (select * from liketable where u_id = ${activeUser}) as liketable on tweets.t_id = liketable.t_id where sender = ${userToSearch} order by dateofupload desc;`;
+    let query;
+    if(activeUser === undefined){
+        query = `select tweets.* from (select tweets.*,username,name,u_id,profilepicture from tweets inner join users on sender = users.u_id where commentof is null) as tweets  where sender = ${userToSearch} order by dateofupload desc;`;
+    }else{
+        query = `select tweets.*,liked from (select tweets.*,username,name,u_id,profilepicture from tweets inner join users on sender = users.u_id where commentof is null) as tweets left join (select * from liketable where u_id = ${activeUser}) as liketable on tweets.t_id = liketable.t_id where sender = ${userToSearch} order by dateofupload desc;`;
+    }
+
     return  execQueury(query);
 }
 

@@ -22,7 +22,6 @@ async function username(req,res){
         }
     }
     catch(err){
-        console.log(err);
         return res.status(500).json({message:"Test"});
     }
 }
@@ -55,4 +54,19 @@ async function searchUsers(req,res){
     }
 }
 
-module.exports={profile,username,getListOfUsersToFollow,searchUsers}
+async function getAllTweetsOfUser(req,res){
+    let {u_id} = req.params;
+    try{
+        let result = await userDB.getAllTweetsOfUser(u_id);
+        return res.status(200).json({result});
+    }
+    catch(err){
+        return res.status(500).json({message:'fail'});
+    }
+}
+
+async function searchHash(req,res){
+    return res.status(500).json({messsage:"fail"}); 
+}
+
+module.exports={profile,username,getListOfUsersToFollow,searchUsers,getAllTweetsOfUser,searchHash};
