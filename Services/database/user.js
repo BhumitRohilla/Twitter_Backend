@@ -120,4 +120,19 @@ async function getProfile(u_id){
     return execQueury(query);
 }
 
-module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile};
+async function getAllTweetsOfUser(userToSearch,activeUser){
+    let query = `select tweets.*,liked from (select tweets.*,username,name,u_id,profilepicture from tweets inner join users on sender = users.u_id where commentof is null) as tweets left join (select * from liketable where u_id = ${activeUser}) as liketable on tweets.t_id = liketable.t_id where sender = ${userToSearch} order by dateofupload desc;`;
+    return  execQueury(query);
+}
+
+async function getAllCommentOfUser(userToSearch,activeUser){
+    let query =`select tweets.*,liked from (select tweets.*,username,name,u_id,profilepicture from tweets inner join users on sender = users.u_id where commentof is not null) as tweets left join (select * from liketable where u_id = ${activeUser}) as liketable on tweets.t_id = liketable.t_id where sender = ${userToSearch} order by dateofupload desc;`;
+    return execQueury(query);
+}
+
+async function getAllLikedOfUser(userToSearch,activeUser){
+    let query = `select tweets.*,liked from (select tweets.*,username,name,u_id,profilepicture from tweets inner join users on sender = users.u_id where t_id in (select t_id from liketable where u_id = ${userToSearch})) as tweets left join (select * from liketable where u_id = ${activeUser}) as liketable on tweets.t_id = liketable.t_id order by dateofupload desc;`;
+    return execQueury(query);
+}
+
+module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser};

@@ -1,13 +1,11 @@
-const { updateUser, followUser, unfollowUser, addLike, removeLike } = require('../Services/database/user');
-const { checkIfUserExist } = require('../Controller/userAuth.controller');
-const { getUserToFollow } = require('../Services/database/user');
+const userDB = require('../Services/database/user');
 
 async function profile(req,res){
     console.log(req.file);
     console.log(req.user);
     
     try{
-        await updateUser('profilepicture',req.file.filename,'u_id',req.user.u_id);
+        await userDB.updateUser('profilepicture',req.file.filename,'u_id',req.user.u_id);
         return res.status(200).json({url:req.file.filename});
     }
     catch(err){
@@ -18,7 +16,7 @@ async function profile(req,res){
 async function username(req,res){
     let {username} = req.body;
     try{
-        await updateUser('username',username,'u_id',req.user.u_id);
+        await userDB.updateUser('username',username,'u_id',req.user.u_id);
         return res.status(200).json({message:"Username updated"});
     }
     catch(err){
@@ -33,7 +31,7 @@ async function follow(req,res){
         if(u_id === req.user.u_id){
             return res.status(400).json({message:"user cannot follow itself"});
         }else{
-            await followUser(u_id,req.user.u_id);
+            await userDB.followUser(u_id,req.user.u_id);
             return res.status(200).json({message:"seccess"});
         }
     }
@@ -49,7 +47,7 @@ async function unfollow(req,res){
         if(u_id === req.user.u_id){
             return res.status(400).json({message:"user cannot unfollow itself"})
         }else{
-            await unfollowUser(u_id,req.user.u_id);
+            await userDB.unfollowUser(u_id,req.user.u_id);
             return res.status(200).json({message:"success"});
         }
     }
@@ -68,7 +66,7 @@ async function userToFollow(req,res){
         limit = 5;
     }
     try{
-        let result = await getUserToFollow(req.user.u_id,offset,limit);
+        let result = await userDB.getUserToFollow(req.user.u_id,offset,limit);
         return res.status(200).json(result);
     }
     catch(err){
@@ -79,7 +77,7 @@ async function userToFollow(req,res){
 async function liked(req,res){
     let {tId} = req.params;
     try{
-        await addLike(tId,req.user.u_id);
+        await userDB.addLike(tId,req.user.u_id);
         return res.status(200).json({message:"success"});
     }
     catch(err){
@@ -91,7 +89,7 @@ async function liked(req,res){
 async function removeLikes(req,res){
     let {tId} = req.params;
     try{
-        await removeLike(tId,req.user.u_id);
+        await userDB.removeLike(tId,req.user.u_id);
         return res.status(200).json({message:"success"});
     }
     catch(err){
@@ -99,4 +97,37 @@ async function removeLikes(req,res){
     }
 }
 
-module.exports ={profile,username,follow,unfollow,userToFollow,liked,removeLikes};
+async function getAllTweetsOfUser(req,res){
+    let {u_id} = req.params;
+    try{
+        let result = await userDB.getAllTweetsOfUser(u_id,req.user.u_id);
+        return res.status(200).json({result});
+    }
+    catch(err){
+        return res.status(500).json({message:"Server error occure"});
+    }
+}
+
+async function getAllCommentOfUser(req,res){
+    let {u_id} = req.params;
+    try{
+        let result = await userDB.getAllCommentOfUser(u_id,req.user.u_id);
+        return res.status(200).json({result});
+    }
+    catch(err){
+        return res.status(500).json({message:"Server error occure"});
+    }
+}
+
+async function getAllLikedOfUser(req,res){
+    let {u_id} = req.params;
+    try{
+        let result = await userDB.getAllLikedOfUser(u_id,req.user.u_id);
+        return res.status(200).json({result});
+    }
+    catch(err){
+        return res.status(500).json({message:"Server error occure"})
+    }
+}
+
+module.exports ={profile,username,follow,unfollow,userToFollow,liked,removeLikes,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser};
