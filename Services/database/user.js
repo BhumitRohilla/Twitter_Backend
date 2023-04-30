@@ -153,4 +153,9 @@ async function getUserIdFromUsername(usernames){
     return execQueury(query);
 }
 
-module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers,getUserIdFromUsername};
+async function checkFollowStatus(userToCheckUid,againstUid){
+    let query = `select count(*) from followtable where u_id = ${userToCheckUid}  and follower = ${againstUid};`;
+    return execQueury(query);
+}
+
+module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers,getUserIdFromUsername,checkFollowStatus};

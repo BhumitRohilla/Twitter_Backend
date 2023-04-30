@@ -28,5 +28,6 @@ router.route('/getAllCommentsOfUser/:u_id').get(userController.getAllCommentOfUs
 
 router.route('/getAllLikedOfUser/:u_id').get(userController.getAllLikedOfUser)
 
+router.route('/checkFollowStatus/:u_id').get(userController.checkFollowStatus)
 
 module.exports = router;

@@ -130,4 +130,17 @@ async function getAllLikedOfUser(req,res){
     }
 }
 
-module.exports ={profile,username,follow,unfollow,userToFollow,liked,removeLikes,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser};
+async function checkFollowStatus(req,res){
+    let u_id = req.params.u_id;
+    try{
+        let result = await userDB.checkFollowStatus(u_id,req.user.u_id);
+        (result[0].count == 1)?result = true: result = false;
+        return res.status(200).json({result}); 
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({message:"fail"});
+    }
+}
+
+module.exports ={profile,username,follow,unfollow,userToFollow,liked,removeLikes,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,checkFollowStatus};

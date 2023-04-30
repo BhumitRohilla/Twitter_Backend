@@ -11,7 +11,7 @@ async function getTweet(t_id,u_id){
 }
 
 async function getFollowTweet(uId,offset,limit){
-    let query = `select tweets.*,likeTable.liked from (select tweets.*,users.username,users.profilepicture,users.u_id from (select * from tweets where sender  = ${uId} union select * from tweets where sender in (select u_id from followTable where follower = ${uId}) offset ${offset} limit ${limit}) as tweets inner join users on tweets.sender = users.u_id order by dateOfUpload desc) as tweets left join liketable on tweets.t_id = likeTable.t_id and likeTable.u_id = ${uId} order by dateofupload desc;`;
+    let query = `select tweets.*,likeTable.liked from (select tweets.*,users.name,users.username,users.profilepicture,users.u_id from (select * from tweets where sender  = ${uId} union select * from tweets where sender in (select u_id from followTable where follower = ${uId}) offset ${offset} limit ${limit}) as tweets inner join users on tweets.sender = users.u_id order by dateOfUpload desc) as tweets left join liketable on tweets.t_id = likeTable.t_id and likeTable.u_id = ${uId} order by dateofupload desc;`;
     return execQueury(query);
 }
 
