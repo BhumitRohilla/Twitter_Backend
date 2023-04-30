@@ -14,4 +14,8 @@ router.post('/show/follow',authorize,tweetController.showFollow)
 
 router.post('/sendComment',authorize,upload.array('tweetImg',4),tweetController.sendComments)
 
+router.get('/getSingleTweet/:t_id',authorize,tweetController.getSingleTweet)
+
+router.get('/getCommentTweet/:t_id',authorize,tweetController.getAllCommentTweet);
+
 module.exports =  router;

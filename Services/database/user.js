@@ -143,4 +143,14 @@ async function searchUsers(username){
     return execQueury(query);
 }
 
-module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers};
+async function getUserIdFromUsername(usernames){
+    if(usernames.length == 0 ){
+        return [];
+    }
+    let result = [];
+    let string = usernames.join(', ');
+    let query = `select u_id from users where username in (${string})`;
+    return execQueury(query);
+}
+
+module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers,getUserIdFromUsername};

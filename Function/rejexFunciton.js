@@ -29,4 +29,19 @@ function checkIfAllAreValid(user){
     }
 }
 
-module.exports={validEmail,validUserName,validEmail,makeValidUserName,checkIfAllAreValid};
+function getMentions(text){
+    let mentionsRejex = /(^|(?<=\s))@\w+/g;
+    let mentions = text.match(mentionsRejex);
+
+    if(mentions === null ){
+        return [];
+    }
+
+    mentions = mentions.map((element)=>{
+        return `'${element.substring(1)}'`;
+    })
+
+    return  mentions;
+}
+
+module.exports={validEmail,validUserName,validEmail,makeValidUserName,checkIfAllAreValid,getMentions};

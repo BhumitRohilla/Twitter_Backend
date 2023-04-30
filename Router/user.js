@@ -28,4 +28,5 @@ router.route('/getAllCommentsOfUser/:u_id').get(userController.getAllCommentOfUs
 
 router.route('/getAllLikedOfUser/:u_id').get(userController.getAllLikedOfUser)
 
+
 module.exports = router;
