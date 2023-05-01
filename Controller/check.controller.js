@@ -1,4 +1,5 @@
 const userDB = require('../Services/database/user')
+const hashDB = require('../Services/database/hash');
 
 async function profile(req,res){
     let {u_id} = req.params;
@@ -69,4 +70,14 @@ async function searchHash(req,res){
     return res.status(500).json({messsage:"fail"}); 
 }
 
-module.exports={profile,username,getListOfUsersToFollow,searchUsers,getAllTweetsOfUser,searchHash};
+async function getAllHash(req,res){
+    try{
+        let result = await hashDB.getAllHash();
+        return res.status(200).json({result});
+    }
+    catch(err){
+        return res.status(500).json({message:'fail'});
+    }
+}
+
+module.exports={profile,username,getListOfUsersToFollow,searchUsers,getAllTweetsOfUser,searchHash,getAllHash};

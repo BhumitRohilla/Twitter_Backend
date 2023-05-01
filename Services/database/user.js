@@ -173,4 +173,9 @@ async function updateUserProfile(toUpdate,u_id){
     
 }
 
-module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers,getUserIdFromUsername,checkFollowStatus,updateUserProfile};
+async function getNotifications(u_id){
+    let query=`select tweets.*,liked  from (select * from (select tweets.*,name,username,profilepicture from tweets inner join users on tweets.sender = users.u_id) as tweets where t_id in (select t_id from mentions where u_id = ${u_id}) )as tweets left join liketable on tweets.t_id = liketable.t_id and liketable.u_id = ${u_id}`;
+    return execQueury(query);
+}
+
+module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers,getUserIdFromUsername,checkFollowStatus,updateUserProfile,getNotifications};

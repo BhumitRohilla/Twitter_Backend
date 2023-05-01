@@ -151,13 +151,19 @@ async function updateProfile(req,res){
 
     let headerImg = req.files?.headerImg && req.files?.headerImg[0].filename;
     if(headerImg === undefined){
-        headerImg = null;
+        headerImg=null;
     }
+
     let profileImg = req.files?.profileImg && req.files?.profileImg[0].filename;
 
     let obj={headerpicture:headerImg,name:req.body.name,bio:req.body.bio,profilepicture:profileImg};
     if(profileImg === undefined){
         delete obj.profilepicture;
+    }
+
+
+    if(headerImg === null && req.body.headerRemove===undefined){
+        delete obj.headerpicture;
     }
 
     try{
@@ -170,4 +176,14 @@ async function updateProfile(req,res){
     }
 }
 
-module.exports ={profile,username,follow,unfollow,userToFollow,liked,removeLikes,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,checkFollowStatus,updateProfile};
+async function getNotifications(req,res){
+    try{
+        let result = await userDB.getNotifications(req.user.u_id);
+        return res.status(200).json({result});
+    }
+    catch(err){
+        return res.status(500).json({message:'Server error occure'})
+    }
+}
+
+module.exports ={profile,username,follow,unfollow,userToFollow,liked,removeLikes,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,checkFollowStatus,updateProfile,getNotifications};

@@ -47,4 +47,6 @@ router.route('/checkFollowStatus/:u_id').get(userController.checkFollowStatus)
 
 router.route('/updateProfile/').post(upload.fields([{name:'profileImg',maxCount:1},{name:'headerImg',maxCount:1}]),userController.updateProfile)
 
+router.route('/getNotifications').get(userController.getNotifications);
+
 module.exports = router;

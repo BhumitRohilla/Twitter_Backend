@@ -17,4 +17,6 @@ router.route('/getAllTweetsOfUser/:u_id').get(checkController.getAllTweetsOfUser
 
 router.route('/searchHash/:hash').get(checkController.searchHash);
 
+router.route('/getAllHash').get(checkController.getAllHash);
+
 module.exports = router;
