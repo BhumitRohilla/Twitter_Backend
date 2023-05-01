@@ -113,8 +113,8 @@ async function removeLike(t_id,u_id){
 }
 
 async function getProfile(u_id){
-    let query = `select *, (select count(*) follows from followtable where u_id = ${u_id}),(select count(*) following from followTable where follower = ${u_id}) from users where u_id = ${u_id} ;`;
-    return execQueury(query);
+    let query = `select users.u_id,users.username,users.profilepicture,users.headerpicture,users.email,users.name,users.bio, (select count(*) follows from followtable where u_id = ${u_id}),(select count(*) following from followTable where follower = ${u_id}) from users where u_id = ${u_id};`;
+     return execQueury(query);
 }
 
 async function getAllTweetsOfUser(userToSearch,activeUser){
@@ -158,4 +158,19 @@ async function checkFollowStatus(userToCheckUid,againstUid){
     return execQueury(query);
 }
 
-module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers,getUserIdFromUsername,checkFollowStatus};
+async function updateUserProfile(toUpdate,u_id){
+    let query = `update users set `;
+    for(keys in toUpdate){
+        if(toUpdate[keys] == null){
+            query+=` ${keys} = null,`
+        }else{
+            query+= ` ${keys} = '${toUpdate[keys]}',`
+        }
+    }
+    query = query.substring(0,query.length-1);
+    query+= ` where u_id = ${u_id};`
+    return execQueury(query);
+    
+}
+
+module.exports = {getUser,refreshUser,getUserFromEmail,createNewUser,updateUser,checkIfUsernameTaken,followUser,unfollowUser,getListOfUsers,getUserToFollow,addLike,removeLike,getProfile,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,searchUsers,getUserIdFromUsername,checkFollowStatus,updateUserProfile};

@@ -143,4 +143,31 @@ async function checkFollowStatus(req,res){
     }
 }
 
-module.exports ={profile,username,follow,unfollow,userToFollow,liked,removeLikes,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,checkFollowStatus};
+async function updateProfile(req,res){
+
+    if(req.body.name.trim() === ''){
+        return res.status(403).json({message:'Name Empty is not allowd'});
+    }
+
+    let headerImg = req.files?.headerImg && req.files?.headerImg[0].filename;
+    if(headerImg === undefined){
+        headerImg = null;
+    }
+    let profileImg = req.files?.profileImg && req.files?.profileImg[0].filename;
+
+    let obj={headerpicture:headerImg,name:req.body.name,bio:req.body.bio,profilepicture:profileImg};
+    if(profileImg === undefined){
+        delete obj.profilepicture;
+    }
+
+    try{
+        await userDB.updateUserProfile(obj,req.user.u_id);
+        return res.status(200).json({message:'success'});
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({message:'fail'})
+    }
+}
+
+module.exports ={profile,username,follow,unfollow,userToFollow,liked,removeLikes,getAllTweetsOfUser,getAllCommentOfUser,getAllLikedOfUser,checkFollowStatus,updateProfile};
