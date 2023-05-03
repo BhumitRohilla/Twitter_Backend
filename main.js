@@ -29,7 +29,7 @@ const auth = require("./Router/auth");
 const tweet = require("./Router/tweet");
 const user = require("./Router/user");
 const check = require("./Router/check");
-
+const message = require('./Router/message')
 //Middleware
 
 const { authorize } = require("./Middleware/authrization");
@@ -50,11 +50,11 @@ io.on("connection", (socket) => {
         console.log('user removed',data);
         global.onlineUser.delete(data);
     })
-    socket.on('send-message',({message,receiver,sender})=>{
+    socket.on('send-message',({message,receiver,sender,senderDetails})=>{
         let id = global.onlineUser.get(receiver);
-        console.log(message,receiver,sender,id);
+        console.log(message,receiver,sender,id,senderDetails);
         if(id){
-            io.to(id).emit('recieve-message',{message,sender});
+            io.to(id).emit('recieve-message',{message,sender,senderDetails});
         }
     })
 });
@@ -66,6 +66,8 @@ app.use("/tweet", tweet);
 app.use("/user", authorize, user);
 
 app.use("/check", check);
+
+app.use('/message',authorize,message);
 
 app.route("*")
     .get((req, res) => {

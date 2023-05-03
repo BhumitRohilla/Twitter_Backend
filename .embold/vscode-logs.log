@@ -1,0 +1,11 @@
+2023-05-02 11:27:30 info: tempDirectory:c:\Users\bhumi\.vscode\extensions\embold-vscode.embold-0.1.4\temp
+2023-05-02 11:27:30 info: Extraction complete for source: c:\Users\bhumi\.vscode\extensions\embold-vscode.embold-0.1.4\resources\embold-scanner-archive.zip, destination: c:\Users\bhumi\.vscode\extensions\embold-vscode.embold-0.1.4\temp
+2023-05-02 11:27:30 info: Congratulations, your extension "Embold" is now active!
+2023-05-02 11:31:43 info: file:///d%3A/CodeQuotient/Web%20Development%20Starting/React/twitter/backend/Middleware/socket.io.js
+2023-05-02 11:31:43 error: SQLITE_ERROR: no such table: issues
+2023-05-02 18:46:27 info: file:///d%3A/CodeQuotient/Web%20Development%20Starting/React/twitter/backend/.git/index.lock
+2023-05-02 18:46:27 error: SQLITE_ERROR: no such table: issues
+2023-05-02 18:46:35 info: file:///d%3A/CodeQuotient/Web%20Development%20Starting/React/twitter/backend/.git/index.lock
+2023-05-02 18:46:35 error: SQLITE_ERROR: no such table: issues
+2023-05-02 18:47:04 info: file:///d%3A/CodeQuotient/Web%20Development%20Starting/React/twitter/backend/.git/index.lock
+2023-05-02 18:47:04 error: SQLITE_ERROR: no such table: issues
