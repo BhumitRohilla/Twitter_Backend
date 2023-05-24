@@ -1,6 +1,7 @@
-const { getMentions } = require('../Function/rejexFunciton');
+const { getMentions,getHash } = require('../Function/rejexFunciton');
 const { getUserIdFromUsername } = require('../Services/database/user');
 const tweetDB = require('../Services/database/tweet');
+const hashDB = require('../Services/database/hash');
 
 //TODO: Improve menstion and tweet and hash part.
 async function send(req,res){ 
@@ -10,12 +11,12 @@ async function send(req,res){
     })
 
     let mentions = getMentions(req.body.tweet) ;
-
+    let hash = getHash(req.body.tweet);
     try{
-
         let result = await tweetDB.sendTweet(req.user.u_id,req.body.tweet,img);
         let u_ids = await getUserIdFromUsername(mentions);
         await tweetDB.addToMentionTable(result[0].t_id,u_ids);
+        await hashDB.addToHash(result[0].t_id,hash)
         result = await tweetDB.getTweet(result[0].t_id,req.user.u_id);
         return res.status(200).json({result:result[0]});
     }

@@ -10,15 +10,20 @@ const pool = new Pool({
 
 
 async function execQueury(query){
-    const client = await pool.connect();
     try{
-        let result = await client.query(query);
-        return (result.rows);
+        const client = await pool.connect();
+        try{
+            let result = await client.query(query);
+            return (result.rows);
+        }
+        catch(err){
+            throw new Error(err);
+        }finally{
+            client.release();
+        }
     }
     catch(err){
-        throw new Error(err);
-    }finally{
-        client.release();
+        console.log(err);
     }
 }
 

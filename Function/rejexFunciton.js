@@ -44,4 +44,17 @@ function getMentions(text){
     return  mentions;
 }
 
-module.exports={validEmail,validUserName,validEmail,makeValidUserName,checkIfAllAreValid,getMentions};
+function getHash(text){
+    let hashRejex = /(^|(?<=\s))#[a-zA-Z_0-9]+(\s|$)/g;
+    let hash = text.match(hashRejex);
+    if(hash==null){
+        return [];
+    }else{
+        hash = hash.map((element)=>{
+            return element.substring(1);
+        })
+    }
+    return hash;
+}
+
+module.exports={validEmail,validUserName,validEmail,makeValidUserName,checkIfAllAreValid,getMentions,getHash};

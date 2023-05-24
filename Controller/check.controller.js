@@ -67,7 +67,16 @@ async function getAllTweetsOfUser(req,res){
 }
 
 async function searchHash(req,res){
-    return res.status(500).json({messsage:"fail"}); 
+    const hash = req.params.hash
+    try{
+        let result = await hashDB.searchHash(hash);
+        return res.status(200).json({result});
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({messsage:"fail"}); 
+    }
+
 }
 
 async function getAllHash(req,res){
