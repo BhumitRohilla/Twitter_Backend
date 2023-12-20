@@ -1,6 +1,8 @@
 const {getUserFromEmail,getUser,refreshUser, createNewUser} = require('../Services/database/user');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const config = require('../config/config');
+
 const { encrypt, check } = require('../Function/encryption');
 const sendVarificationMain = require('../Services/Email/validationMail');
 const { makeValidUserName, checkIfAllAreValid } = require('../Function/rejexFunciton');
@@ -26,15 +28,7 @@ async function login(req,res){
                 u_id: user['u_id']
             },process.env.REFRESH_TOKEN)
 
-            res.cookie(
-                'twitterAuth', refreshToken,{
-                    domain: 'localhost',
-                    maxAge: 7 * 24 * 60 * 60 * 1000,
-                    sameSite: 'strict',
-                    httpOnly: true,
-                    
-                }
-            )
+            res.cookie('twitterAuth', refreshToken, config.cookie)
             return res.status(200).json({token: authToken});
         }
     }
@@ -77,12 +71,7 @@ async function logout(req,res){
     let refreshToken = jwt.sign({
         exp: (Date.now()/1000) + 0,
     },process.env.REFRESH_TOKEN)
-    res.cookie('twitterAuth',refreshToken,{
-        httpOnly: true,
-        maxAge: 1000,
-        SameSite: 'strict',
-        domain: process.env.HOSTNAME
-    })
+    res.cookie('twitterAuth',refreshToken, config.cookie)
     return res.status(200).send();
 }
 
@@ -122,15 +111,7 @@ async function signUp(req,res){
                 u_id: user['u_id']
             },process.env.REFRESH_TOKEN)
 
-            res.cookie(
-                'twitterAuth', refreshToken,{
-                    domain: 'localhost',
-                    maxAge: 7 * 24 * 60 * 60 * 1000,
-                    sameSite: 'strict',
-                    httpOnly: true,
-                    
-                }
-            )
+            res.cookie('twitterAuth', refreshToken, config.cookie)
             return res.status(200).json({token: authToken,...user});
         }else{
             return res.status(500).json({message:"Error occure"});
@@ -159,12 +140,7 @@ async function sendValidationMail(req,res){
         console.log(err);
         if(!err){
            
-           return res.cookie('signupToken',token,
-           {
-                domain:'localhost',
-                maxAge:  15 * 60 * 1000,
-                sameSite:'strict'
-           }).status(200).json({message:'success'});
+           return res.cookie('signupToken',token, config.cookie).status(200).json({message:'success'});
         }else{
             return res.status(500).json({message:'fail'});
         }
